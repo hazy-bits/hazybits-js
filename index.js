@@ -4,6 +4,7 @@ const url = require('url');
 const awsIot = require('aws-iot-device-sdk');
 const util = require('util');
 const uuid = require('uuid');
+const jwtDecoder = require('jwt-decode');
 
 const EventEmitter = require('events').EventEmitter;
 
@@ -20,7 +21,7 @@ function HazyBitsClient(entryUrl) {
   const httpClient = (parsedUrl.protocol === 'http:') ? http : https;
 
   const me = this;
-
+  var bearerToken = '';
   // unique topic ID for current session
   const iotTopic = `/hazybits/session/${uuid.v4()}`;
   let iotClient = null;
@@ -47,7 +48,8 @@ function HazyBitsClient(entryUrl) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Content-Length': Buffer.byteLength(base64)
+        'Content-Length': Buffer.byteLength(base64),
+        'Authorization': 'Bearer ' + bearerToken
       }
     };
 
@@ -69,7 +71,11 @@ function HazyBitsClient(entryUrl) {
    * Connects to Hazy Bits infrastructure and creates new session.
    * @param callback Completion callback.
    */
-  this.connect = function connect(callback) {
+  this.connect = function connect(authToken, callback) {
+    //todo: manage token expiration.
+    let decodedToken  = jwtDecoder(authToken);
+    bearerToken = authToken;
+
     // request IoT access keys
     httpClient.get(entryUrl, function(response) {
       // Continuously update stream with data

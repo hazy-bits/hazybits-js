@@ -9,7 +9,7 @@ describe('HazyBits Client Tests', function(){
     const authUrl = 'https://17w67330tb.execute-api.eu-west-1.amazonaws.com/dev/iot/keys';
     const client = new HazyBitsClient(authUrl);
 
-    client.connect(function(err) {
+    client.connect('dummytoken', function(err) {
       if (err) done(err);
 
       client.on('connect', function() {
