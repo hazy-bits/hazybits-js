@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "4"
+# command to run tests
+script: 
+  - npm run bundle
+  - npm run docs
