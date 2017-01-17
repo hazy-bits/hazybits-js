@@ -9,40 +9,56 @@
 
 # API Reference
 
+## Classes
+
+<dl>
+<dt><a href="#HazyBitsClient">HazyBitsClient</a></dt>
+<dd></dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#HazyConnectCallback">HazyConnectCallback</a> : <code>function</code></dt>
+<dd><p>Callback signature for <a href="HazyBitsClient.connect">HazyBitsClient.connect</a> method.</p>
+</dd>
+</dl>
+
 <a name="HazyBitsClient"></a>
 
 ## HazyBitsClient
 **Kind**: global class  
 
 * [HazyBitsClient](#HazyBitsClient)
-    * [new HazyBitsClient(entryUrl)](#new_HazyBitsClient_new)
-    * [.connect(callback)](#HazyBitsClient+connect)
-    * [.start(base64)](#HazyBitsClient+start)
+    * [new HazyBitsClient([entryUrl])](#new_HazyBitsClient_new)
+    * [.connect(authToken, [callback])](#HazyBitsClient+connect) ⇒ <code>undefined</code>
+    * [.start(base64)](#HazyBitsClient+start) ⇒ <code>undefined</code>
 
 <a name="new_HazyBitsClient_new"></a>
 
-### new HazyBitsClient(entryUrl)
+### new HazyBitsClient([entryUrl])
 Creates Hazy Bits client object.
 
 
-| Param | Description |
-| --- | --- |
-| entryUrl | Hazy Bits entry point URL. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [entryUrl] | <code>string</code> | <code>&quot;\&quot;https://api.hazybits.com\&quot;&quot;</code> | Hazy Bits API entry point URL. |
 
 <a name="HazyBitsClient+connect"></a>
 
-### hazyClient.connect(callback)
+### hazyClient.connect(authToken, [callback]) ⇒ <code>undefined</code>
 Connects to Hazy Bits infrastructure and creates new session.
 
 **Kind**: instance method of <code>[HazyBitsClient](#HazyBitsClient)</code>  
 
-| Param | Description |
-| --- | --- |
-| callback | Completion callback. |
+| Param | Type | Description |
+| --- | --- | --- |
+| authToken | <code>string</code> | Authentication token. |
+| [callback] | <code>[HazyConnectCallback](#HazyConnectCallback)</code> | Completion callback. |
 
 <a name="HazyBitsClient+start"></a>
 
-### hazyClient.start(base64)
+### hazyClient.start(base64) ⇒ <code>undefined</code>
 Starts processing workflow using provided image as input.
 
 **Kind**: instance method of <code>[HazyBitsClient](#HazyBitsClient)</code>  
@@ -50,6 +66,18 @@ Starts processing workflow using provided image as input.
 | Param | Description |
 | --- | --- |
 | base64 | Image in base64 form. |
+
+<a name="HazyConnectCallback"></a>
+
+## HazyConnectCallback : <code>function</code>
+Callback signature for [HazyBitsClient.connect](HazyBitsClient.connect) method.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| err | <code>object</code> | Connection error, if any |
+| client | <code>[HazyBitsClient](#HazyBitsClient)</code> | Initialized HazyBits client instance. |
 
 
 * * *

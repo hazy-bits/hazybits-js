@@ -12,7 +12,7 @@ const EventEmitter = require('events').EventEmitter;
 
 /**
  * Creates Hazy Bits client object.
- * @param entryUrl Hazy Bits entry point URL.
+ * @param {string=} entryUrl="https://api.hazybits.com" Hazy Bits API entry point URL.
  * @constructor
  * @typicalname hazyClient
  */
@@ -36,8 +36,17 @@ function HazyBitsClient(entryUrl) {
   };
 
   /**
+   * Callback signature for {@link HazyBitsClient.connect} method.
+   * @callback HazyConnectCallback
+   * @param {object} err Connection error, if any
+   * @param {HazyBitsClient} client Initialized HazyBits client instance.
+   */
+
+  /**
    * Connects to Hazy Bits infrastructure and creates new session.
-   * @param callback Completion callback.
+   * @param {string} authToken Authentication token.
+   * @param {HazyConnectCallback=} callback Completion callback.
+   * @returns {undefined}
    */
   this.connect = function connect(authToken, callback) {
     //TODO: manage token expiration.
@@ -98,6 +107,7 @@ function HazyBitsClient(entryUrl) {
   /**
    * Starts processing workflow using provided image as input.
    * @param base64 Image in base64 form.
+   * @returns {undefined}
    */
   this.start = function start(base64) {
 
