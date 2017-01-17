@@ -12,7 +12,7 @@ const EventEmitter = require('events').EventEmitter;
 
 /**
  * Creates Hazy Bits client object.
- * @param {string=} entryUrl="https://api.hazybits.com" Hazy Bits API entry point URL.
+ * @param {string=} entryUrl=https://api.hazybits.com Hazy Bits API entry point URL.
  * @constructor
  * @typicalname hazyClient
  */
@@ -38,7 +38,7 @@ function HazyBitsClient(entryUrl) {
   /**
    * Callback signature for {@link HazyBitsClient.connect} method.
    * @callback HazyConnectCallback
-   * @param {object} err Connection error, if any
+   * @param {object} err Connection error, if any.
    * @param {HazyBitsClient} client Initialized HazyBits client instance.
    */
 

@@ -42,7 +42,7 @@ Creates Hazy Bits client object.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [entryUrl] | <code>string</code> | <code>&quot;\&quot;https://api.hazybits.com\&quot;&quot;</code> | Hazy Bits API entry point URL. |
+| [entryUrl] | <code>string</code> | <code>&quot;https://api.hazybits.com&quot;</code> | Hazy Bits API entry point URL. |
 
 <a name="HazyBitsClient+connect"></a>
 
@@ -76,7 +76,7 @@ Callback signature for [HazyBitsClient.connect](HazyBitsClient.connect) method.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| err | <code>object</code> | Connection error, if any |
+| err | <code>object</code> | Connection error, if any. |
 | client | <code>[HazyBitsClient](#HazyBitsClient)</code> | Initialized HazyBits client instance. |
 
 
