@@ -1,7 +1,10 @@
 language: node_js
 node_js:
-  - "4"
-# command to run tests
-script: 
-  - npm run bundle
-  - npm run docs
+- '4'
+script:
+- npm run bundle
+- npm test
+- npm run docs
+notifications:
+  slack:
+    secure: ZvRd6ywCXZPLzKHF94Sz7IdKJdjm2U/dhWiV/Ahm4QLl8OCShO2eWnfjN23Pb+B+gRZ4bfkO/hOmgK1XxxHtA+ojnjt9kzMJX0tKEYb2Yz1r8NfpKDQtgXcGMnNnF5lpBW3uh1dLNbtMXBAksf4KyNuUokWQtQSuhugbIK2OiEvjwlzAypMM9+JdggFJOVQPbcBbysqnNXKl6Kr4CDXvln2IGpBDdW9Zw8zCBppsQD4ZFeel7SY48rLZYyviuO2CHwtYtgRM/V3ziO6xeUHG87zwtZ+JEDQjLXRuTVMYC/KxkE7DUS2r9AmVZBoyqk4Z1zOsjcZTa8yEAzuIAlTxjgBtl7N2L392n6BLfoiyTNGc//xK0puz7N2fnW2A6/l+Z+nyqWt7ZfVh9N8SYQ74j+meQSN1DwMT+dhhUz5H9TbI2MDwZF/vGNZWh09Er64rBUqFS8I/XwJw2pcX7ORqR4rQWHLSMqPyGljWb3Ov1mbh/wLCtIjWAxPxmbVlGMcH/LDSbBul2ZeQbdwzUdjWyNlJ4Q1mnB7AGWgEw9cF8ZMBS02p1A4ulWhmB30xNWBV18z+o6cXY/j6j2+Gr7sy/QsYgGnX0dq3g45nF0XcQWM2HLMcMLmDjkwqIaSTbuwBRDvB0QeeBFAdzm6SSox838P53e+nJId4IUtCfn8JJmc=

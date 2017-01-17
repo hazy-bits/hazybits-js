@@ -21,6 +21,7 @@
   "author": "HazyBits",
   "dependencies": {
     "aws-iot-device-sdk": "^1.0.13",
+    "jwt-decode": "^2.1.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

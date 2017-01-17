@@ -16,12 +16,15 @@ const EventEmitter = require('events').EventEmitter;
  */
 function HazyBitsClient(entryUrl) {
 
+  entryUrl = entryUrl ? entryUrl : 'https://api.hazybits.com';
+
   // TODO: should be a better way to support both HTTP and HTTPS
   const parsedUrl = url.parse(entryUrl);
   const httpClient = (parsedUrl.protocol === 'http:') ? http : https;
 
   const me = this;
-  var bearerToken = '';
+  let bearerToken = '';
+
   // unique topic ID for current session
   const iotTopic = `/hazybits/session/${uuid.v4()}`;
   let iotClient = null;
@@ -31,53 +34,18 @@ function HazyBitsClient(entryUrl) {
   };
 
   /**
-   * Starts processing workflow using provided image as input.
-   * @param base64 Image in base64 form.
-   */
-  this.start = function start(base64) {
-
-    // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
-    const startUrl = entryUrl.replace('iot/keys', 'start');
-    const parsedUrl = url.parse(startUrl);
-
-    // An object of options to indicate where to post to
-    const post_options = {
-      host: parsedUrl.hostname,
-      port: parsedUrl.port,
-      path: parsedUrl.path,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Content-Length': Buffer.byteLength(base64),
-        'Authorization': 'Bearer ' + bearerToken
-      }
-    };
-
-    // Set up the request
-    const post_req = httpClient.request(post_options, function(res) {
-      res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-        console.log('Response: ' + chunk);
-      });
-    });
-
-    // post the data
-    const postData = JSON.stringify({base64: base64, topic: iotTopic});
-    post_req.write(postData);
-    post_req.end();
-  };
-
-  /**
    * Connects to Hazy Bits infrastructure and creates new session.
    * @param callback Completion callback.
    */
   this.connect = function connect(authToken, callback) {
-    //todo: manage token expiration.
+    //TODO: manage token expiration.
     let decodedToken  = jwtDecoder(authToken);
+
     bearerToken = authToken;
 
+    const authUrl = url.resolve(entryUrl, '/iot/keys');
     // request IoT access keys
-    httpClient.get(entryUrl, function(response) {
+    httpClient.get(authUrl, function(response) {
       // Continuously update stream with data
       let body = '';
       response.on('data', function(data) {
@@ -123,6 +91,43 @@ function HazyBitsClient(entryUrl) {
     }).on('error', function(err) {
       callback(err);
     });
+  };
+
+  /**
+   * Starts processing workflow using provided image as input.
+   * @param base64 Image in base64 form.
+   */
+  this.start = function start(base64) {
+
+    // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
+    const startUrl = url.resolve(entryUrl, '/start');
+    const parsedUrl = url.parse(startUrl);
+
+    // An object of options to indicate where to post to
+    const post_options = {
+      host: parsedUrl.hostname,
+      port: parsedUrl.port,
+      path: parsedUrl.path,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Length': Buffer.byteLength(base64),
+        'Authorization': 'Bearer ' + bearerToken
+      }
+    };
+
+    // Set up the request
+    const post_req = httpClient.request(post_options, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        console.log('Response: ' + chunk);
+      });
+    });
+
+    // post the data
+    const postData = JSON.stringify({base64: base64, topic: iotTopic});
+    post_req.write(postData);
+    post_req.end();
   };
 }
 

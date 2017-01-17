@@ -6,10 +6,12 @@ describe('HazyBits Client Tests', function(){
 
   it('should connect successfully', function(done) {
 
-    const authUrl = 'https://17w67330tb.execute-api.eu-west-1.amazonaws.com/dev/iot/keys';
-    const client = new HazyBitsClient(authUrl);
+    const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+      'eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.' +
+      '03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75773';
 
-    client.connect('dummytoken', function(err) {
+    const client = new HazyBitsClient();
+    client.connect(dummyToken, function(err) {
       if (err) done(err);
 
       client.on('connect', function() {
