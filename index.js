@@ -54,7 +54,7 @@ function HazyBitsClient(entryUrl) {
 
     bearerToken = authToken;
 
-    const authUrl = url.resolve(entryUrl, '/iot/keys');
+    const authUrl = url.resolve(entryUrl, '/login');
     // request IoT access keys
     httpClient.get(authUrl, function(response) {
       // Continuously update stream with data
