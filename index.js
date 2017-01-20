@@ -54,7 +54,7 @@ function HazyBitsClient(entryUrl) {
 
     bearerToken = authToken;
 
-    const authUrl = url.resolve(entryUrl, '/login');
+    const authUrl = entryUrl + '/login';
     // request IoT access keys
     httpClient.get(authUrl, function(response) {
       // Continuously update stream with data
@@ -112,7 +112,7 @@ function HazyBitsClient(entryUrl) {
   this.start = function start(base64) {
 
     // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
-    const startUrl = url.resolve(entryUrl, '/start');
+    const startUrl = entryUrl + '/start';
     const parsedUrl = url.parse(startUrl);
 
     // An object of options to indicate where to post to
