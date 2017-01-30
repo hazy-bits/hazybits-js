@@ -51,12 +51,21 @@ function HazyBitsClient(entryUrl) {
   this.connect = function connect(authToken, callback) {
     //TODO: manage token expiration.
     let decodedToken  = jwtDecoder(authToken);
-
     bearerToken = authToken;
 
     const authUrl = entryUrl + '/login';
-    // request IoT access keys
-    httpClient.get(authUrl, function(response) {
+    const parsedUrl = url.parse(authUrl);
+
+    // An object of options to indicate where to post to
+    const post_options = {
+      host: parsedUrl.hostname,
+      port: parsedUrl.port,
+      path: parsedUrl.path,
+      method: 'POST'
+    };
+
+    // Set up the request
+    const post_req = httpClient.request(post_options, function(response) {
       // Continuously update stream with data
       let body = '';
       response.on('data', function(data) {
@@ -100,8 +109,11 @@ function HazyBitsClient(entryUrl) {
         callback(null, me);
       });
     }).on('error', function(err) {
-      callback(err);
+      callback(err, null);
     });
+
+    // post the request
+    post_req.end();
   };
 
   /**
