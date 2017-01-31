@@ -149,7 +149,7 @@ function HazyBitsClient(entryUrl) {
     });
 
     // post the data
-    const postData = JSON.stringify({base64: base64, topic: iotTopic});
+    const postData = JSON.stringify({base64: base64, topic: iotTopic, rotateAngle: 'auto'});
     post_req.write(postData);
     post_req.end();
   };
