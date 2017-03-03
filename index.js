@@ -31,6 +31,48 @@ function HazyBitsClient(entryUrl) {
   const iotTopic = `/hazybits/session/${uuid.v4()}`;
   let iotClient = null;
 
+  const postImageForProcessing = function(endpoint, base64, callback) {
+    // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
+    const endpointUrl = entryUrl + '/' + endpoint;
+    const parsedUrl = url.parse(endpointUrl);
+
+    // An object of options to indicate where to post to
+    const post_options = {
+      host: parsedUrl.hostname,
+      port: parsedUrl.port,
+      path: parsedUrl.path,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Length': Buffer.byteLength(base64),
+        'Authorization': 'Bearer ' + bearerToken
+      }
+    };
+
+    // Set up the request
+    var post_req = httpClient.request(post_options, function (res) {
+      //Initialise the variable that will store the response
+      var body='';
+
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        body += chunk;
+      });
+      res.on('end', function () {
+        if (callback) {
+          callback(body);
+        }
+      });
+    });
+
+    // post the data
+    const postData = JSON.stringify({ image: base64, topic: iotTopic });
+    post_req.write(postData);
+    post_req.end();
+
+  };
+
+  // TODO: obsolete, for test purposes only
   this.send = function send(message) {
     iotClient.publish(iotTopic, message);
   };
@@ -119,40 +161,33 @@ function HazyBitsClient(entryUrl) {
   /**
    * Starts processing workflow using provided image as input.
    * @param base64 Image in base64 form.
+   * @param {function=} callback Completion callback.
    * @returns {undefined}
    */
-  this.start = function start(base64) {
-
-    // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
-    const startUrl = entryUrl + '/start';
-    const parsedUrl = url.parse(startUrl);
-
-    // An object of options to indicate where to post to
-    const post_options = {
-      host: parsedUrl.hostname,
-      port: parsedUrl.port,
-      path: parsedUrl.path,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Content-Length': Buffer.byteLength(base64),
-        'Authorization': 'Bearer ' + bearerToken
-      }
-    };
-
-    // Set up the request
-    const post_req = httpClient.request(post_options, function(res) {
-      res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-        console.log('Response: ' + chunk);
-      });
-    });
-
-    // post the data
-    const postData = JSON.stringify({base64: base64, topic: iotTopic});
-    post_req.write(postData);
-    post_req.end();
+  this.start = function start(base64, callback) {
+    postImageForProcessing('start', base64, callback);
   };
+
+  /**
+   * Performs threshold operation over provided image.
+   * @param base64 Image in base64 form.
+   * @param {function=} callback Completion callback.
+   * @returns {undefined}
+   */
+  this.threshold = function start(base64, callback) {
+    postImageForProcessing('threshold', base64, callback);
+  };
+
+  /**
+   * Starts OCR processing over provided image.
+   * @param base64 Image in base64 form.
+   * @param {function=} callback Completion callback.
+   * @returns {undefined}
+   */
+  this.ocr = function start(base64, callback) {
+    postImageForProcessing('ocr', base64, callback);
+  };
+
 }
 
 util.inherits(HazyBitsClient, EventEmitter);
