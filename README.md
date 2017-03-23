@@ -32,8 +32,9 @@
 * [HazyBitsClient](#HazyBitsClient)
     * [new HazyBitsClient([entryUrl])](#new_HazyBitsClient_new)
     * [.connect(authToken, [callback])](#HazyBitsClient+connect) ⇒ <code>undefined</code>
-    * [.start(base64, [callback])](#HazyBitsClient+start) ⇒ <code>undefined</code>
+    * [.start(base64)](#HazyBitsClient+start) ⇒ <code>undefined</code>
     * [.threshold(base64, [callback])](#HazyBitsClient+threshold) ⇒ <code>undefined</code>
+    * [.rotate(base64, [callback])](#HazyBitsClient+rotate) ⇒ <code>undefined</code>
     * [.ocr(base64, [callback])](#HazyBitsClient+ocr) ⇒ <code>undefined</code>
 
 <a name="new_HazyBitsClient_new"></a>
@@ -60,8 +61,19 @@ Connects to Hazy Bits infrastructure and creates new session.
 
 <a name="HazyBitsClient+start"></a>
 
-### hazyClient.start(base64, [callback]) ⇒ <code>undefined</code>
+### hazyClient.start(base64) ⇒ <code>undefined</code>
 Starts processing workflow using provided image as input.
+
+**Kind**: instance method of <code>[HazyBitsClient](#HazyBitsClient)</code>  
+
+| Param | Description |
+| --- | --- |
+| base64 | Image in base64 form. |
+
+<a name="HazyBitsClient+threshold"></a>
+
+### hazyClient.threshold(base64, [callback]) ⇒ <code>undefined</code>
+Performs threshold operation over provided image.
 
 **Kind**: instance method of <code>[HazyBitsClient](#HazyBitsClient)</code>  
 
@@ -70,10 +82,10 @@ Starts processing workflow using provided image as input.
 | base64 |  | Image in base64 form. |
 | [callback] | <code>function</code> | Completion callback. |
 
-<a name="HazyBitsClient+threshold"></a>
+<a name="HazyBitsClient+rotate"></a>
 
-### hazyClient.threshold(base64, [callback]) ⇒ <code>undefined</code>
-Performs threshold operation over provided image.
+### hazyClient.rotate(base64, [callback]) ⇒ <code>undefined</code>
+Performs rotate operation over provided image.
 
 **Kind**: instance method of <code>[HazyBitsClient](#HazyBitsClient)</code>  
 
