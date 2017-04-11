@@ -145,7 +145,8 @@ function HazyBitsClient(entryUrl) {
         body += chunk;
       });
       res.on('end', function () {
-        callback(body);
+        if (callback)
+          callback(body);
       });
     });
 
