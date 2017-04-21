@@ -36,6 +36,7 @@
     * [.threshold(base64, [callback])](#HazyBitsClient+threshold) ⇒ <code>undefined</code>
     * [.rotate(base64, [callback])](#HazyBitsClient+rotate) ⇒ <code>undefined</code>
     * [.ocr(base64, [callback])](#HazyBitsClient+ocr) ⇒ <code>undefined</code>
+    * [.convert(blob, [callback])](#HazyBitsClient+convert)
 
 <a name="new_HazyBitsClient_new"></a>
 
@@ -104,6 +105,18 @@ Starts OCR processing over provided image.
 | Param | Type | Description |
 | --- | --- | --- |
 | base64 |  | Image in base64 form. |
+| [callback] | <code>function</code> | Completion callback. |
+
+<a name="HazyBitsClient+convert"></a>
+
+### hazyClient.convert(blob, [callback])
+Retrieves specified blob.
+
+**Kind**: instance method of <code>[HazyBitsClient](#HazyBitsClient)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| blob |  | Blob to retrieve. |
 | [callback] | <code>function</code> | Completion callback. |
 
 <a name="HazyConnectCallback"></a>

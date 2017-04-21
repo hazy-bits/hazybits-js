@@ -120,6 +120,14 @@ function HazyBitsClient(entryUrl) {
     // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
     const startUrl = entryUrl + '/' + endpoint;
     const parsedUrl = url.parse(startUrl);
+    const body = {
+      image: {
+        type: 'base64',
+        data: base64
+      }
+    };
+
+    const postData = JSON.stringify(body);
 
     // An object of options to indicate where to post to
     const post_options = {
@@ -129,7 +137,7 @@ function HazyBitsClient(entryUrl) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Content-Length': Buffer.byteLength(base64),
+        'Content-Length': Buffer.byteLength(postData),
         'Authorization': 'Bearer ' + bearerToken,
         'X-Hazy-Session': sessionId
       }
@@ -151,11 +159,48 @@ function HazyBitsClient(entryUrl) {
     });
 
     // post the data
-    const postData = JSON.stringify({ image: base64 });
+
     post_req.write(postData);
     post_req.end();
 
   };
+
+  const getImage = function(blob, callback) {
+    const encodedBlob = encodeURIComponent(JSON.stringify(blob));
+
+    // TODO: in real life we need to get URLs from server after we started new session. Hardcoded for now.
+    const convertUrl = entryUrl + '/convert?image=' + encodedBlob;
+    const parsedUrl = url.parse(convertUrl);
+
+    // An object of options to indicate where to post to
+    const get_options = {
+      host: parsedUrl.hostname,
+      port: parsedUrl.port,
+      path: parsedUrl.path,
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + bearerToken,
+        'X-Hazy-Session': sessionId
+      }
+    };
+
+    // Set up the request
+    const get_req = httpClient.request(get_options, function (res) {
+      //Initialise the variable that will store the response
+      let body='';
+
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        body += chunk;
+      });
+      res.on('end', function () {
+        callback(body);
+      });
+    });
+
+    get_req.end();
+  };
+
 
   /**
    * Starts processing workflow using provided image as input.
@@ -194,6 +239,15 @@ function HazyBitsClient(entryUrl) {
    */
   this.ocr = function ocr(base64, callback) {
     postImage('ocr', base64, callback);
+  };
+
+  /**
+   * Retrieves specified blob.
+   * @param blob Blob to retrieve.
+   * @param {function=} callback Completion callback.
+   */
+  this.convert = function convert(blob, callback) {
+    getImage(blob, callback);
   };
 
 }
